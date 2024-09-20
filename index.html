@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wordice</title>
+    <style>
+        .cube {
+            width: 200px;
+            height: 200px;
+            margin: 200px auto;
+            position: relative;
+            transform-style: preserve-3d;
+            transform: rotateX(0deg) rotateY(0deg);
+            transition: all 0.5s cubic-bezier(0, .43, .28, .93);
+        }
+        .cube>div {
+            width: 200px;
+            height: 200px;
+            text-align: center;
+            line-height: 200px;
+            font-family: Arial, Helvetica, sans-serif;
+            color: gray;
+            font-size: 200px;
+            position: absolute;
+            top: 0;
+            left: 0;
+            transition: color 1s cubic-bezier(0, .43, .28, .93);
+            border: rgb(130, 130, 130) solid;
+        }
+        .cube:hover .left {
+            color: aqua;
+            text-shadow: 0px 0px 15px aqua;
+        }
+        .cube:hover .right {
+            color: aqua;
+            text-shadow: 0px 0px 15px aqua;
+        }
+        .cube:hover .top {
+            color: aqua;
+            text-shadow: 0px 0px 15px aqua;
+        }
+        .cube:hover .bottom {
+            color: aqua;
+            text-shadow: 0px 0px 15px aqua;
+        }
+        .cube:hover .back {
+            color: aqua;
+            text-shadow: 0px 0px 15px aqua;
+        }
+        .cube:hover .front {
+            color: aqua;
+            text-shadow: 0px 0px 15px aqua;
+        }
+        .left {
+            background: linear-gradient(135deg, rgb(160, 160, 160), rgb(230, 230, 230));
+            transform: rotateY(-90deg) rotateZ(-0deg);
+            margin-left: -100px;
+
+
+        }
+        .right {
+            background: linear-gradient(rgb(180, 180, 180), rgb(210, 210, 210));
+            transform: rotateY(-90deg) rotateZ(90deg) rotateX(180deg);
+            margin-left: 100px;
+        }
+        .top {
+            background: linear-gradient(90deg, rgb(190, 190, 190), rgb(220, 220, 220));
+            transform: rotateX(90deg) rotateZ(0deg);
+            margin-top: -100px;
+
+
+        }
+        .bottom {
+            background: rgb(180, 180, 180);
+            transform: rotateX(-90deg) rotateZ(0deg) translateZ(100px);
+        }
+        .back {
+            background: rgb(180, 180, 180);
+            transform: rotateZ(90deg) translateZ(-100px) rotateX(180deg);
+
+        }
+        .front {
+            background: linear-gradient(rgb(235, 235, 235), rgb(240, 240, 240));
+            transform: translateZ(100px);
+
+        }
+        body {
+            background: rgb(230, 230, 230);
+        }
+        .lights {
+            position: relative;
+            display: flex;
+            left: calc(50% - 205px);
+            top: -100px;
+        }
+        .lights>div {
+            height: 50px;
+            width: 50px;
+            background-color: rgb(130, 130, 130);
+            filter: blur(1px);
+            border-radius: 25px;
+            margin: 20px;
+            transition: all 0.5s cubic-bezier(0, .43, .28, .93);
+        }
+        #wordinput {
+            left: calc(50% - 205px);
+            top: -100px;
+            display: flex;
+            position: relative;
+            margin: auto;
+        }
+        .letter {
+            border: solid gray;
+            border-width: 10px;
+            margin: 10px;
+            height: 50px;
+            width: 50px;
+            text-align: center;
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 50px;
+            color: gray;
+        }
+         .btn{
+             font-size: 30px;
+             z-index:100;
+             width:40px;
+             height: 40px;
+             background-color: rgb(156, 63, 63);
+             border-radius: 10px;
+             text-align: center;
+             line-height: 36px;
+             color: white;
+             
+         }
+         .nmr{
+             margin-top: 20px;
+             font-size: 30px;
+             z-index:100;
+             width:40px;
+             height: 40px;
+             background-color: rgb(163, 132, 168);
+             border-radius: 10px;
+             text-align: center;
+             line-height: 45px;
+             color: white;
+         }
+         .game{
+             visibility: hidden;
+         }
+         .exp{
+             background-color: rgb(210, 210, 210);
+             top:-50px;
+             position:absolute;
+             top:calc(100% - 220px);
+             left:5%;
+             box-shadow: inset 2px 2px 1px gray;
+             border-radius: 10px;
+             width:90% ;
+         }
+         p{
+             text-align: center;
+             line-height: 15px;
+         }
+        .guide{
+            background-color: rgb(156, 156, 156);
+            width: 80%;
+            height: 90%;
+            top:0px;
+            position:absolute;
+            margin-left: 10%;
+            box-shadow: 10px 10px 5px rgba(0,0,0,0.5);
+            border-radius: 20px;
+          /*  visibility:hidden ;*/
+        }
+        .title{
+            font-size: 100px;
+            color: rgb(50,50,50);
+            text-shadow: 2px 2px 1px black;
+            margin-left: calc(50% - 150px);
+            
+        }
+        .cubeG {
+            top:-100px;
+            width: 200px;
+            height: 200px;
+            margin: 200px auto;
+            position: relative;
+            transform-style: preserve-3d;
+            transform: rotateX(-30deg) rotateY(50deg);
+            transition: all 0.5s cubic-bezier(0, .43, .28, .93);
+            animation:arotate 10s infinite;
+            perspective: 5000px;
+        }
+        .cubeG>div {
+            width: 200px;
+            height: 200px;
+            text-align: center;
+            line-height: 200px;
+            font-family: Arial, Helvetica, sans-serif;
+            color: gray;
+            font-size: 200px;
+            position: absolute;
+            top: 0;
+            left: 0;
+            transition: all 1s cubic-bezier(0, .43, .28, .93);
+            border: rgb(130,130,130) solid;
+        }
+
+        .leftG {
+            background: linear-gradient(135deg, rgb(160, 160, 160), rgb(230, 230, 230));
+            transform: rotateY(-90deg) rotateZ(-0deg);
+            margin-left: -100px;
+           
+
+        }
+        .rightG {
+            background: linear-gradient(rgb(180, 180, 180), rgb(210, 210, 210));
+            transform: rotateY(-90deg) rotateZ(0deg) rotateX(180deg);
+            margin-left: 100px;
+        }
+        .topG {
+            background: linear-gradient(90deg, rgb(190, 190, 190), rgb(220, 220, 220));
+            transform: rotateX(90deg) rotateZ(180deg);
+            margin-top: -100px;
+      
+
+        }
+        .bottomG{
+            background: rgb(180, 180, 180);
+            transform: rotateX(-90deg) rotateZ(-90deg) translateZ(100px);
+        }
+        .backG {
+            background: rgb(180, 180, 180);
+            transform: rotateZ(-90deg) translateZ(-100px) rotateX(0deg);
+         
+        }
+        .frontG {
+            background: linear-gradient(rgb(235, 235, 235), rgb(240, 240, 240));
+            transform: translateZ(100px);
+        }
+        @keyframes arotate {
+           0%{
+                transform: rotate3d(0,0,1,10deg);
+            }
+            20%{
+                transform: rotate3d(9,0,1,80deg);
+            }
+            40%{
+                transform: rotate3d(1,0,1,170deg);
+            }
+      
+            60%{
+                transform:rotateX(-80deg) rotateY(170deg);
+            }
+            80%{
+                transform: rotateX(170deg) rotateZ(90deg);
+            }
+            100%{
+                transform: rotateY(90deg);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="btn" id="btn">×</div>
+    <div class="nmr" id="nmr" title="开启地狱模式">😈</div>
+    <div class="guide" id="guide">
+    <div class="title">GUIDE</div>
+        <div class="cubeG" >
+
+            <div class="frontG" >G</div>
+            <div class="backG" >E</div>
+            <div class="leftG" ></div>
+            <div class="rightG" >I</div>
+            <div class="topG" >D</div>
+            <div class="bottomG" >U</div>
+        </div>
+        <div class="exp">
+        <p>一个骰子表示一个五字母单词</p>
+        <p>每个字母下方相邻格子就是下一个字母</p>
+        <p>如上图就是G-U-I-D-E：GUIDE</p>
+        <p>消耗一次操作，进行猜词</p>
+        <p> 也可以消耗一次操作，点击骰子旋转，也许可以得到更多信息 </p>
+        <p id="trick"> 点击😈开启地狱模式 </p>
+    </div>
+    </div>
+
+    <div class="game" id="game">
+        <div class="cube" id="cube">
+
+            <div class="front" id="dice2"></div>
+            <div class="back" id="dice5"></div>
+            <div class="left" id="dice4"></div>
+            <div class="right" id="dice3"></div>
+            <div class="top" id="dice1"></div>
+            <div class="bottom" id="dice6"></div>
+        </div>
+        <div class="lights">
+            <div id="light1"></div>
+            <div id="light2"></div>
+            <div id="light3"></div>
+            <div id="light4"></div>
+            <div id="light5"></div>
+        </div>
+        <div id="wordinput">
+            <div class="letter" id="let1"></div>
+            <div class="letter" id="let2"></div>
+            <div class="letter" id="let3"></div>
+            <div class="letter" id="let4"></div>
+            <div class="letter" id="let5"></div>
+        </div>
+    </div>
+    <script>
+        var conletter = 1;
+        var inputable = 1;
+        var letters = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"];
+        document.onkeydown = function (e) {//输入字母
+            if (inputable == 1&&compete==0) {
+                var keyNum = window.event ? e.keyCode : e.which;
+                if (keyNum > 64 && keyNum < 91) {
+                    if (conletter < 5) {
+                        document.getElementById("let" + conletter).innerHTML = (letters[keyNum - 65]);
+                        conletter++;
+
+                    }
+                    else {
+                        document.getElementById("let5").innerHTML = (letters[keyNum - 65]);
+                        conletter = 1;
+                        output();
+                        inputable = 0;
+                        setTimeout(function () {
+                            for (var i = 1; i < 6; i++) {
+                                document.getElementById("let" + i).innerHTML = "";
+                                document.getElementById("let" + i).style.color = "gray";
+                                document.getElementById("let" + i).style.textShadow = "";
+                            }
+                            inputable = 1;
+                        }, 1000);
+
+                    }
+                }
+                else if (keyNum == 8) {//删除字母
+                    document.getElementById("let" + (conletter - 1)).innerHTML = "";
+                    conletter--;
+
+                }
+            }
+        }
+        function output() {
+            var wordguess = "";
+            for (var i = 1; i < 6; i++) {
+                wordguess += document.getElementById("let" + i).innerHTML;
+            }
+            console.log(wordguess);
+            if (wordguess != word) {
+                addcount();
+                for (var i = 1; i < 6; i++) {
+                    document.getElementById("let" + i).style.color = "red";
+                    document.getElementById("let" + i).style.textShadow = "0px 0px 10px red";
+                }
+            }
+            else {
+                for (var i = 1; i < 6; i++) {
+                    document.getElementById("let" + i).style.color = "green";
+                    document.getElementById("let" + i).style.textShadow = "0px 0px 10px green";
+                }
+                setTimeout(create, 1000);
+                score += (5 - count);
+                count = 0;
+                for (i = 1; i < 6; i++) {
+                    document.getElementById("light" + i).style.background = "rgb(130,130,130)";
+                }
+                console.log("Your Average Score is now "+0.25*Math.floor(4*score/(mother + 1)));
+            }
+        }
+        function angel(x, y) {//根据数字后的数字决定各个面的旋转方向
+            if (x == 2) {
+                if (y == 4) { ang = "90deg" };
+                if (y == 6) { ang = "0deg" };
+                if (y == 1) { ang = "180deg" };
+                if (y == 3) { ang = "-90deg" };
+            }
+            if (x == 1) {
+                if (y == 4) { ang = "90deg" };
+                if (y == 5) { ang = "180deg" };
+                if (y == 3) { ang = "-90deg" };
+                if (y == 2) { ang = "0deg" };
+            }
+            if (x == 4) {
+                if (y == 1) { ang = "180deg" };
+                if (y == 5) { ang = "90deg" };
+                if (y == 6) { ang = "0deg" };
+                if (y == 2) { ang = "-90deg" };
+            }
+            if (x == 6) {
+                if (y == 2) { ang = "180deg" };
+                if (y == 3) { ang = "-90deg" };
+                if (y == 4) { ang = "90deg" };
+                if (y == 5) { ang = "0deg" };
+            }
+            if (x == 3) {
+                if (y == 2) { ang = "90deg" };
+                if (y == 1) { ang = "0deg" };
+                if (y == 6) { ang = "180deg" };
+                if (y == 5) { ang = "-90deg" };
+            }
+            if (x == 5) {
+                if (y == 4) { ang = "90deg" };
+                if (y == 1) { ang = "180deg" };
+                if (y == 6) { ang = "0deg" };
+                if (y == 3) { ang = "-90deg" };
+            }
+            return ang;
+        }
+        function rotate() {//进行一次随机旋转
+            var rx = -30 + 90 * Math.floor(4 * Math.random());
+            var ry = 45 + 90 * Math.floor(4 * Math.random());
+            document.getElementById("cube").style.transform = "rotateX(" + rx + "deg) rotateY(" + ry + "deg)";
+        }
+        function pri() {//生成一个123456的排列：相邻两数相加不等于7
+            var line = [1, 0, 0, 0, 0, 0];
+            var left = [2, 3, 4, 5, 6];
+            for (var i = 1; i < 6; i++) {
+                var x = Math.floor(left.length * Math.random());
+                var y = left[x];
+                line[i] = y;
+                while (y + line[i - 1] == 7) {
+                    if (i != 5) {
+                        var x = Math.floor(left.length * Math.random());
+                        var y = left[x];
+                        line[i] = y;
+                    }
+                    else {
+                        pri();
+                        break;
+                    }
+                }
+                left.splice(x, 1);
+            }
+            return line;
+        }
+        function create() {//创造一个骰子
+            var line = pri();
+            console.log(hell)
+            var dic1 = ["START", "SOLID", "NOISY", "MOIST", "POINT", "THREE", "ABOUT", "BRICK", "SPELL", "MAMMA", "SMELL", "FOUND", "TRIBE", "THING", "WANNA","ALERT", "MOUNT", "AGENT", "AGREE", "AGONY", "ALIEN", "BLACK", "BLADE", "BRAND", "CARVE", "CHALK", "CYCLE", "EARTH", "FINAL", "HAPPY", "IDIOT", "LAUGH", "LOYAL", "MARAL", "MOURN", "OFTEN", "OUGHT", "PHOTO", "POLAR", "APPLE", "QUEEN", "QUOTA", "RADAR", "REALM", "SCORN", "SCOUT", "STALE", "DECAY", "YEAST", "VOWEL"]
+            var dic2 = ["cigar","rebut","sissy", "humph", "awake", "blush", "focal", "evade", "naval", "serve", "heath", "dwarf", "model", "karma", "stink", "grade", "quiet", "bench", "abate", "feign", "major", "death", "fresh", "crust", "stool", "colon", "abase", "marry", "react", "batty", "pride", "floss", "helix", "croak", "staff", "paper", "unfed", "whelp", "trawl", "outdo", "adobe", "crazy", "sower", "repay", "digit", "crate", "cluck", "spike", "mimic", "pound", "maxim", "linen", "unmet", "flesh", "booby", "forth", "first", "stand", "belly", "ivory", "seedy", "print", "yearn", "drain", "bribe", "stout", "panel", "crass", "flume", "offal", "agree", "error", "swirl", "argue", "bleed", "delta", "flick", "totem", "wooer", "front", "shrub", "parry", "biome", "lapel", "start", "greet", "goner", "golem", "lusty", "loopy", "round", "audit", "lying", "gamma", "labor", "islet", "civic", "forge", "corny", "moult", "basic", "salad", "agate", "spicy", "spray", "essay", "fjord", "spend", "kebab", "guild", "aback", "motor", "alone", "hatch", "hyper", "thumb", "dowry", "ought", "belch", "dutch", "pilot", "tweed", "comet", "jaunt", "enema", "steed", "abyss", "growl", "fling", "dozen", "boozy", "erode", "world", "gouge", "click", "briar", "great", "altar", "pulpy", "blurt", "coast", "duchy", "groin", "fixer", "group", "rogue", "badly", "smart", "pithy", "gaudy", "chill", "heron", "vodka", "finer", "surer", "radio", "rouge", "perch", "retch", "wrote", "clock", "tilde", "store", "prove", "bring", "solve", "cheat", "grime", "exult", "usher", "epoch", "triad", "break", "rhino", "viral", "conic", "masse", "sonic", "vital", "trace", "using", "peach", "champ", "baton", "brake", "pluck", "craze", "gripe", "weary", "picky", "acute", "ferry", "aside", "tapir", "troll", "unify", "rebus", "boost", "truss", "siege", "tiger", "banal", "slump", "crank", "gorge", "query", "drink", "favor", "abbey", "tangy", "panic", "solar", "shire", "proxy", "point", "robot", "prick", "wince", "crimp", "knoll", "sugar", "whack", "mount", "perky", "could", "wrung", "light", "those", "moist", "shard", "pleat", "aloft", "skill", "elder", "frame", "humor", "pause", "ulcer", "ultra", "robin", "cynic", "aroma", "caulk", "shake", "dodge", "swill", "tacit", "other", "thorn", "trove", "bloke", "vivid", "spill", "chant", "choke", "rupee", "nasty", "mourn", "ahead", "brine", "cloth", "hoard", "sweet", "month", "lapse", "watch", "today", "focus", "smelt", "tease", "cater", "movie", "saute", "allow", "renew", "their", "slosh", "purge", "chest", "depot", "epoxy", "nymph", "found", "shall", "harry", "stove", "lowly", "snout", "trope", "fewer", "shawl", "natal", "comma", "foray", "scare", "stair", "black", "squad", "royal", "chunk", "mince", "shame", "cheek", "ample", "flair", "foyer", "cargo", "oxide", "plant", "olive", "inert", "askew", "heist", "shown", "zesty", "hasty", "trash", "fella", "larva", "forgo", "story", "hairy", "train", "homer", "badge", "midst", "canny", "fetus", "butch", "farce", "slung", "tipsy", "metal", "yield", "delve", "being", "scour", "glass", "gamer", "scrap", "money", "hinge", "album", "vouch", "asset", "tiara", "crept", "bayou", "atoll", "manor", "creak", "showy", "phase", "froth", "depth", "gloom", "flood", "trait", "girth", "piety", "payer", "goose", "float", "donor", "atone", "primo", "apron", "blown", "cacao", "loser", "input", "gloat", "awful", "brink", "smite", "beady", "rusty", "retro", "droll", "gawky", "hutch", "pinto", "gaily", "egret", "lilac", "sever", "field", "fluff", "hydro", "flack", "agape", "voice", "stead", "stalk", "berth", "madam", "night", "bland", "liver", "wedge", "augur", "roomy", "wacky", "flock", "angry", "bobby", "trite", "aphid", "tryst", "midge", "power", "elope", "cinch", "motto", "stomp", "upset", "bluff", "cramp", "quart", "coyly", "youth", "rhyme", "buggy", "alien", "smear", "unfit", "patty", "cling", "glean", "label", "hunky", "khaki", "poker", "gruel", "twice", "twang", "shrug", "treat", "unlit", "waste", "merit", "woven", "octal", "needy", "clown", "widow", "irony", "ruder", "gauze", "chief", "onset", "prize", "fungi", "charm", "gully", "inter", "whoop", "taunt", "leery", "class", "theme", "lofty", "tibia", "booze", "alpha", "thyme", "eclat", "doubt", "parer", "chute", "stick", "trice", "alike", "sooth", "recap", "saint", "liege", "glory", "grate", "admit", "brisk", "soggy", "usurp", "scald", "scorn", "leave", "twine", "sting", "bough", "marsh", "sloth", "dandy", "vigor", "howdy", "enjoy", "valid", "ionic", "equal", "unset", "floor", "catch", "spade", "stein", "exist", "quirk", "denim", "grove", "spiel", "mummy", "fault", "foggy", "flout", "carry", "sneak", "libel", "waltz", "aptly", "piney", "inept", "aloud", "photo", "dream", "stale", "vomit", "ombre", "fanny", "unite", "snarl", "baker", "there", "glyph", "pooch", "hippy", "spell", "folly", "louse", "gulch", "vault", "godly", "threw", "fleet", "grave", "inane", "shock", "crave", "spite", "valve", "skimp", "claim", "rainy", "musty", "pique", "daddy", "quasi", "arise", "aging", "valet", "opium", "avert", "stuck", "recut", "mulch", "genre", "plume", "rifle", "count", "incur", "total", "wrest", "mocha", "deter", "study", "lover", "safer", "rivet", "funny", "smoke", "mound", "undue", "sedan", "pagan", "swine", "guile", "gusty", "equip", "tough", "canoe", "chaos", "covet", "human", "udder", "lunch", "blast", "stray", "manga", "melee", "lefty", "quick", "paste", "given", "octet", "risen", "groan", "leaky", "grind", "carve", "loose", "sadly", "spilt", "apple", "slack", "honey", "final", "sheen", "eerie", "minty", "slick", "derby", "wharf", "spelt", "coach", "erupt", "singe", "price", "spawn", "fairy", "jiffy", "filmy", "stack", "chose", "sleep", "ardor", "nanny", "niece", "woozy", "handy", "grace", "ditto", "stank", "cream", "usual", "diode", "valor", "angle", "ninja", "muddy", "chase", "reply", "prone", "spoil", "heart", "shade", "diner", "arson", "onion", "sleet", "dowel", "couch", "palsy", "bowel", "smile", "evoke", "creek", "lance", "eagle", "idiot", "siren", "built", "embed", "award", "dross", "annul", "goody", "frown", "patio", "laden", "humid", "elite", "lymph", "edify", "might", "reset", "visit", "gusto", "purse", "vapor", "crock", "write", "sunny", "loath", "chaff", "slide", "queer", "venom", "stamp", "sorry", "still", "acorn", "aping", "pushy", "tamer", "hater", "mania", "awoke", "brawn", "swift", "exile", "birch", "lucky", "freer", "risky", "ghost", "plier", "lunar", "winch", "snare", "nurse", "house", "borax", "nicer", "lurch", "exalt", "about", "savvy", "toxin", "tunic", "pried", "inlay", "chump", "lanky", "cress", "eater", "elude", "cycle", "kitty", "boule", "moron", "tenet", "place", "lobby", "plush", "vigil", "index", "blink", "clung", "qualm", "croup", "clink", "juicy", "stage", "decay", "nerve", "flier", "shaft", "crook", "clean", "china", "ridge", "vowel", "gnome", "snuck", "icing", "spiny", "rigor", "snail", "flown", "rabid", "prose", "thank", "poppy", "budge", "fiber", "moldy", "dowdy", "kneel", "track", "caddy", "quell", "dumpy", "paler", "swore", "rebar", "scuba", "splat", "flyer", "horny", "mason", "doing", "ozone", "amply", "molar", "ovary", "beset", "queue", "cliff", "magic", "truce", "sport", "fritz", "edict", "twirl", "verse", "llama", "eaten", "range", "whisk", "hovel", "rehab", "macaw", "sigma", "spout", "verve", "sushi", "dying", "fetid", "brain", "buddy", "thump", "scion", "candy", "chord", "basin", "march", "crowd", "arbor", "gayly", "musky", "stain", "dally", "bless", "bravo", "stung", "title", "ruler", "kiosk", "blond", "ennui", "layer", "fluid", "tatty", "score", "cutie", "zebra", "barge", "matey", "bluer", "aider", "shook", "river", "privy", "betel", "frisk", "bongo", "begun", "azure", "weave", "genie", "sound", "glove", "braid", "scope", "wryly", "rover", "assay", "ocean", "bloom", "irate", "later", "woken", "silky", "wreck", "dwelt", "slate", "smack", "solid", "amaze", "hazel", "wrist", "jolly", "globe", "flint", "rouse", "civil", "vista", "relax", "cover", "alive", "beech", "jetty", "bliss", "vocal", "often", "dolly", "eight", "joker", "since", "event", "ensue", "shunt", "diver", "poser", "worst", "sweep", "alley", "creed", "anime", "leafy", "bosom", "dunce", "stare", "pudgy", "waive", "choir", "stood", "spoke", "outgo", "delay", "bilge", "ideal", "clasp", "seize", "hotly", "laugh", "sieve", "block", "meant", "grape", "noose", "hardy", "shied", "drawl", "daisy", "putty", "strut", "burnt", "tulip", "crick", "idyll", "vixen", "furor", "geeky", "cough", "naive", "shoal", "stork", "bathe", "aunty", "check", "prime", "brass", "outer", "furry", "razor", "elect", "evict", "imply", "demur", "quota", "haven", "cavil", "swear", "crump", "dough", "gavel", "wagon", "salon", "nudge", "harem", "pitch", "sworn", "pupil", "excel", "stony", "cabin", "unzip", "queen", "trout", "polyp", "earth", "storm", "until", "taper", "enter", "child", "adopt", "minor", "fatty", "husky", "brave", "filet", "slime", "glint", "tread", "steal", "regal", "guest", "every", "murky", "share", "spore", "hoist", "buxom", "inner", "otter", "dimly", "level", "sumac", "donut", "stilt", "arena", "sheet", "scrub", "fancy", "slimy", "pearl", "silly", "porch", "dingo", "sepia", "amble", "shady", "bread", "friar", "reign", "dairy", "quill", "cross", "brood", "tuber", "shear", "posit", "blank", "villa", "shank", "piggy", "freak", "which", "among", "fecal", "shell", "would", "algae", "large", "rabbi", "agony", "amuse", "bushy", "copse", "swoon", "knife", "pouch", "ascot", "plane", "crown", "urban", "snide", "relay", "abide", "viola", "rajah", "straw", "dilly", "crash", "amass", "third", "trick", "tutor", "woody", "blurb", "grief", "disco", "where", "sassy", "beach", "sauna", "comic", "clued", "creep", "caste", "graze", "snuff", "frock", "gonad", "drunk", "prong", "lurid", "steel", "halve", "buyer", "vinyl", "utile", "smell", "adage", "worry", "tasty", "local", "trade", "finch", "ashen", "modal", "gaunt", "clove", "enact", "adorn", "roast", "speck", "sheik", "missy"]
+            if(hell==0){
+            wordlow = dic1[Math.floor(dic1.length * Math.random())];//获取单词
+            }
+            else{
+            wordlow = dic2[Math.floor(dic2.length * Math.random())];
+            }
+            word=wordlow.toUpperCase()//大写
+            console.log(word);
+            for (var k = 0; k < 5; k++) { document.getElementById("dice" + line[k]).innerHTML = word[k] }
+            for (var k = 1; k < 7; k++) {
+                document.getElementById("dice" + k).style.opacity = 1;
+                document.getElementById("dice" + k).style.textDecoration = "";
+            }
+
+            document.getElementById("dice" + line[5]).innerHTML = "";
+            for (var t = 0; t < 5; t++) {//把每个面旋转方向调好
+                if (line[t] == 2) { document.getElementById("dice2").style.transform = "translateZ(100px) rotateZ(" + angel(2, line[t + 1]) + ")" }
+                else if (line[t] == 1) { document.getElementById("dice1").style.transform = "rotateX(90deg) rotateZ(" + angel(1, line[t + 1]) + ")" }
+                else if (line[t] == 4) { document.getElementById("dice4").style.transform = "rotateY(-90deg) rotateZ(" + angel(4, line[t + 1]) + ")" }
+                else if (line[t] == 6) { document.getElementById("dice6").style.transform = "rotateX(-90deg) rotateZ(" + angel(6, line[t + 1]) + ") translateZ(100px)" }
+                else if (line[t] == 3) { document.getElementById("dice3").style.transform = "rotateY(-90deg) rotateZ(" + angel(3, line[t + 1]) + ") rotateX(180deg)" }
+                else if (line[t] == 5) { document.getElementById("dice5").style.transform = "rotateZ(" + angel(5, line[t + 1]) + ") translateZ(-100px) rotateY(180deg)" }
+            }
+            rotate()
+            for (var i = 1; i < 6; i++) { document.getElementById("light" + i).style.background = "rgb(130,130,130)" };//指示灯变灰
+            mother++;//创造后会使分数计算的分母加一
+        }
+        function addcount() {//尝试次数计数
+            if (count < 4) {
+                count++;
+                document.getElementById("light" + (count)).style.background = "red";
+            }
+            else {//第五下尝试，揭露答案
+                count = 0
+                document.getElementById("light5").style.background = "red";
+                for (var k = 1; k < 7; k++) {
+                    document.getElementById("dice" + k).style.opacity = 0.5;
+                }
+                for (var k = 1; k < 7; k++) {
+                    document.getElementById("dice" + k).style.textDecoration = "underline";
+                }
+                compete = 1;
+            }
+        } 
+        //一些初始化
+        var hell=0;
+        var score = 0;
+        var mother = 0;
+        var compete = 0;
+        var count = 0;
+        create();
+        document.getElementById("cube").addEventListener('click', function () {//点击骰子旋转
+
+            if (compete == 0) {
+                if (count != 4) {
+                    rotate();
+                }
+                addcount();
+            }
+
+            else if (compete == 1) {
+                create();
+                compete = 0;
+            }
+        })
+         var times=0//指南打开与关闭
+        document.getElementById("btn").onclick = function () {
+            if (times==0) {
+                document.getElementById("guide").style.visibility="hidden";
+                document.getElementById("game").style.visibility="visible";
+                document.getElementById("btn").innerHTML="?"
+                document.getElementById("btn").style.backgroundColor="rgb(67, 106, 76)"
+                document.getElementById("btn").style.lineHeight="40px"
+                times=1
+            }
+            else if (times==1) {
+                document.getElementById("guide").style.visibility="visible";
+                document.getElementById("game").style.visibility="hidden";
+                times=0
+                document.getElementById("btn").innerHTML="×";
+                document.getElementById("btn").style.backgroundColor="rgb(156, 63, 63)";
+                document.getElementById("btn").style.lineHeight="36px";
+            }
+        }
+        document.getElementById("nmr").onclick = function () {
+            document.getElementById("nmr").style.visibility="hidden";
+            hell=1;
+            document.getElementById("trick").innerHTML="😈地狱模式不可取消哦😈";
+        }
+    </script>
+</body>
+</html>
